@@ -1,11 +1,24 @@
 const form = document.getElementById('loan-form');
 
-form.addEventListener('submit',calculateResults);
+form.addEventListener('submit',function(e){
+  //Hide Results
+  document.getElementById('results').style.display = 'none';
+
+
+  //Show loader
+  document.getElementById('loading').style.display = 'block';
+
+  setTimeout(calculateResults, 2000);
+
+
+
+   e.preventDefault();
+});
 
 function calculateResults(e){
 
   console.log('Calculating');
-  e.preventDefault();
+ 
 
     //UI Var
     const amount = document.getElementById('amount');
@@ -27,12 +40,22 @@ function calculateResults(e){
         monthlyPayment.value = monthly.toFixed(2);
         totalPayment.value = (monthly * calculatedPayment).toFixed(2);
         totalInterest.value = ((monthly* calculatedPayment)- principal).toFixed(2)
+
+         document.getElementById('results').style.display = 'block';
+
+         
     }
     else{
       showError('Check your numebr again')
     }
 
-  e.preventDefault();
+    document.getElementById('loading').style.display = 'none';
+
+
+
+
+
+ 
 }
 function showError(error){
   const errorDiv = document.createElement('div');
@@ -44,5 +67,12 @@ function showError(error){
 
   card.insertBefore(errorDiv, heading)
 
+  //clear after 3 sec
+  setTimeout(clearError,3000);
+
+}
+
+function clearError(){
+  document.querySelector('.alert').remove();
 }
 console.log(form);
